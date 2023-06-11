@@ -16,8 +16,8 @@ module tb_counter ();
     /////////////////////
 
     localparam time CLOCK_PERIOD = 10;
-    localparam RESET_ACTIVE = `0;
-    localparam RESET_INACTIVE = `1;
+    localparam RESET_ACTIVE = 0;
+    localparam RESET_INACTIVE = 1;
 
     // Testbench Parameters
     integer tb_test_number = 0;
@@ -58,12 +58,12 @@ module tb_counter ();
         begin
             @(negedge tb_clk);
             
-            tb_enable = `0;
-            tb_clear = `0;
-            tb_wrap = `0;
-            tb_max_2 = `0;
-            tb_max_4 = `0;
-            tb_max_8 = `0;
+            tb_enable = 0;
+            tb_clear = 0;
+            tb_wrap = 0;
+            tb_max_2 = 0;
+            tb_max_4 = 0;
+            tb_max_8 = 0;
         end
     endtask
 
@@ -85,7 +85,7 @@ module tb_counter ();
     // DUTs //
     //////////
 
-    counter DUT_2 (N = 2)
+    counter #(.N(2)) DUT_2 
     (
         .clk(tb_clk),
         .nrst(tb_nrst),
@@ -95,10 +95,10 @@ module tb_counter ();
         .max(tb_max_2),
 
         .count(tb_count_2),
-        .at_max(tb_at_max_2),
+        .at_max(tb_at_max_2)
     );
 
-    counter DUT_4 (N = 4)
+    counter #(.N(4)) DUT_4 
     (
         .clk(tb_clk),
         .nrst(tb_nrst),
@@ -108,10 +108,10 @@ module tb_counter ();
         .max(tb_max_4),
 
         .count(tb_count_4),
-        .at_max(tb_at_max_4),
+        .at_max(tb_at_max_4)
     );
 
-    counter DUT_8 (N = 8)
+    counter #(.N(8)) DUT_8 
     (
         .clk(tb_clk),
         .nrst(tb_nrst),
@@ -121,14 +121,14 @@ module tb_counter ();
         .max(tb_max_8),
 
         .count(tb_count_8),
-        .at_max(tb_at_max_8),
+        .at_max(tb_at_max_8)
     );
 
     // Clocking
     always begin
-        tb_clk = `1;
+        tb_clk = 1;
         #(CLOCK_PERIOD / 2);
-        tb_clk = `0;
+        tb_clk = 0;
         #(CLOCK_PERIOD / 2);
     end
 
@@ -138,17 +138,15 @@ module tb_counter ();
         // Test 1: Power on reset //
         ////////////////////////////
 
-        tb_test_num  = tb_test_num + 1;
-        tb_test_case = "Power on Reset";
+        tb_test_number = tb_test_number + 1;
+        tb_test_name = "Power on Reset";
 
         #(0.1);
         tb_nrst = RESET_ACTIVE;
         @(negedge tb_clk);
         tb_nrst = RESET_INACTIVE;
 
-
-
-
+        $finish;
     end
 
 
