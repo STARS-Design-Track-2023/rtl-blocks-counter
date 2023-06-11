@@ -8,9 +8,6 @@ module counter(
     output reg atmax_o
 );
 
-    timeunit 1ns;
-    timeprecision 1ns;
-
     // Write your code here!
 
 endmodule
