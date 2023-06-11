@@ -1,3 +1,15 @@
+"""
+test_script.py
+
+A file containing an (unfinished) cocotb testbench. cocotb is a new, 
+open-source testbenching framework that allows for testbenching in 
+python. This allows for several benifits, including but not limited 
+to, easier prototyping, a large number of Python libraries, and of 
+course, a vastly increased pool of developers over SystemVerilog. I 
+urge y'all to check this file out and take a look at cocotb on your 
+own time. Check https://www.cocotb.org/ for more details!
+"""
+
 import cocotb
 from cocotb.triggers import Timer
 
@@ -16,7 +28,7 @@ async def basic_counting(dut):
         await clock_dut(dut.clk)
         assert dut.count_o.value.integer == (cycle + 1) % (2 ** 8)
 
-    dut._log.info("count_o is %s", dut.count_o.value.integer)
+    dut._log.info("count_o is %s", dut.count_o.value.integer).cocotb
 
 
 @cocotb.test()
