@@ -117,20 +117,11 @@ module tb_counter ();
         .at_max(tb_at_max_4)
     );
 
-/*
-    counter #(.N(8)) DUT_8 
-    (
-        .clk(tb_clk),
-        .nrst(tb_nrst),
-        .enable(tb_enable),
-        .clear(tb_clear),
-        .wrap(tb_wrap),
-        .max(tb_max_8),
 
-        .count(tb_count_8),
-        .at_max(tb_at_max_8)
-    );
-*/
+    // Create an instance for the N = 8, counter
+
+
+
     // Clocking
     always begin
         tb_clk = 0; // set clock initially to be 0 so that they are no time violations at the rising edge 
@@ -247,6 +238,12 @@ module tb_counter ();
         #(0.5); // small delay to check the values
         check_outputs_4(tb_count_4_exp, tb_at_max_4_exp);
 
+
+        ///////////////////////////////////////////////////////////////////////
+        // Add Test Cases for N = 8 Counter Below.                           //
+        // You first need to instantiate the wrapper counter with N = 8,     // 
+        // and define new signals for it in this testbench.                  //
+        ///////////////////////////////////////////////////////////////////////
 
 
 

@@ -5,7 +5,7 @@ description: Counts to a flexible amount. Has strobe at max and controls for wra
 
 module counter
 #(
-    parameter N = 8 // Size of counter, maximum count is 2^N
+    parameter N = 4 // Size of counter (i.e. number of bits at the output). Maximum count is 2^N - 1
 )
 (
     input logic clk,            // Clock
@@ -13,8 +13,8 @@ module counter
     input logic enable,         // Enable
     input logic clear,          // Synchronous active high clear 
     input logic wrap,           // 0: no wrap at max, 1: wrap to 0 at max
-    input logic [N:0] max,      // Max number of count (inclusive)
-    output logic [N:0] count,   // Current count
+    input logic [N - 1:0] max,      // Max number of count (inclusive)
+    output logic [N - 1:0] count,   // Current count
     output logic at_max         // 1 when counter is at max, otherwise 0
 );
 
@@ -22,7 +22,7 @@ module counter
 
     // EXAMPLE CODE, TODO: REMOVE BEFORE COMITTING
 
-    logic [N:0] next_count;
+    logic [N - 1:0] next_count;
 
     always_ff @( posedge clk, negedge nrst ) begin : COUNTER_REGISTER_LOGIC
         if (~nrst) begin
@@ -36,11 +36,14 @@ module counter
     always_comb begin : NEXT_COUNT_LOGIC
         if (~clear) begin
             if (enable) begin
-                if (~wrap && count != max) begin // Count up logic (prob doesn't work)
+                if (count < max) begin 
                     next_count = count + 1;
                 end
-                else begin // No wrap logic
-                    next_count = count;
+                else begin
+                    if(~wrap)
+                        next_count = count;
+                    else 
+                        next_count = 0;
                 end
             end
             else begin // Unenabled logic
@@ -53,6 +56,6 @@ module counter
     end
 
     // Strobe at max logic
-    assign at_max = (count == max);
+    assign at_max = (count == max) ? 1'b1 : 1'b0;
 
 endmodule
