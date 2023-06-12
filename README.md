@@ -13,12 +13,12 @@ a TA signs off on both of these diagrams may a student proceed to their
 implementation.
 
 ## Source Files
-- shift_reg.sv : This is where the design code should be located.
-- tb_shift_reg.sv : This is the test bench used to test your design.
+- counter.sv : This is where the design code should be located.
+- tb_counter.sv : This is the test bench used to test your design.
 
 ## Specifications
 ### Module Name 
-- shift_reg
+- counter
 
 ### Required Parameters
 - `N` | width of counter
