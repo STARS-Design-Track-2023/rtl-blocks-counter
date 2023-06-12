@@ -54,8 +54,8 @@ git clone <URL>
 
 ## Submitting your design
 Once your design has passed all the test cases, you need to commit your design.
-This can be done in one of many ways, the first is through the Source Control
+This can be done in one of many ways, the primary one is through the Source Control
 VS Code Tool (Ctrl + Shift + G). You will need to stage your changes, then you
 can commit them, then you hit the sync button to sync your local repository with
-the remote repository. These are a lot of words which are explaned in more details
-below.
+the remote repository. These are a lot of words which are explaned in more detail 
+in the GitHub fundementals assignment.
