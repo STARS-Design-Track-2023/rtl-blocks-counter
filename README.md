@@ -1,4 +1,4 @@
-﻿# rtl-blocks-counter
+﻿# Counter
 
 This assignment revisits the basic flex counter. 
 This implementation will be much like last time, 
