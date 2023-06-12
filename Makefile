@@ -8,33 +8,7 @@
 # VARIABLES
 ##############################################################################
 
-# include binaries and libraries from ece270
-export PDK_ROOT := ~/sky130A
-export PATH := /home/shay/a/ece270/bin:$(PATH)
-export LD_LIBRARY_PATH := /home/shay/a/ece270/lib:$(LD_LIBRARY_PATH)
-
-
-# binary names
-YOSYS=yosys
-NEXTPNR=nextpnr-ice40
-SHELL=bash
-
-# project vars and filenames
-PROJ	= fpga
-PINMAP 	= fpga/pinmap.pcf
-#TCLPREF = addwave.gtkw
-ICE   	= fpga/ice40hx8k.sv
-UART	= fpga/uart/uart.v fpga/uart/uart_tx.v fpga/uart/uart_rx.v
-FILES   = $(ICE) fpga/top.sv $(addprefix $(SRC)/, $(FPGA_SRC_FILES) ) $(UART)
-FPGA_BUILD   = ./fpga/build
-
-# fpga specific configuration
-DEVICE  = 8k
-TIMEDEV = hx8k
-FOOTPRINT = ct256
-
-# Source
-
+export PDK_ROOT ?= ~/sky130A
 
 # Specify the name of the top level file (do not include the source folder in the name)
 # NOTE: YOU WILL NEED TO SET THIS VARIABLE'S VALUE WHEN WORKING WITH HEIRARCHICAL DESIGNS
@@ -45,12 +19,10 @@ TOP_FILE         := counter_4.sv
 COMPONENT_FILES  := counter.sv 
 
 
-FPGA_SRC_FILES   := 
-
 
 # Specify the filepath of the test bench you want to use (ie. tb_top_level.sv)
 # (do not include the source folder in the name)
-TB               := tb_counter.sv
+TB               := tb_$(TOP_FILE)
 
 # Get the top level design and test_bench module names
 TB_MODULE		 := $(notdir $(basename $(TB)))
@@ -216,32 +188,6 @@ $(SIM_MAPPED): $(MAP)
 	@echo "----------------------------------------------------------------\n\n"
 	@vvp $(BUILD)/$@.vvp
 	@echo "\n\n"
-
-
-##############################################################################
-# FPGA Targets
-##############################################################################
-
-# this target checks your code and synthesizes it into a netlist
-$(FPGA_BUILD)/$(PROJ).json : $(ICE)  $(addprefix $(SRC)/, $(FPGA_SRC_FILES) ) $(PINMAP) Makefile fpga/top.sv
-	# lint with Verilator
-	verilator --lint-only -Werror-WIDTH -Werror-SELRANGE -Werror-COMBDLY -Werror-LATCH -Werror-MULTIDRIVEN fpga/top.sv $(addprefix $(SRC)/, $(FPGA_SRC_FILES) )
-	# if build folder doesn't exist, create it
-	mkdir -p $(FPGA_BUILD)
-	# synthesize using Yosys
-	$(YOSYS) -p "read_verilog -sv -noblackbox $(FILES); synth_ice40 -top ice40hx8k -json $(FPGA_BUILD)/$(PROJ).json"
-	
-	
-# Place and route using nextpnr
-$(FPGA_BUILD)/$(PROJ).asc : $(FPGA_BUILD)/$(PROJ).json
-	$(NEXTPNR) --hx8k --package ct256 --pcf $(PINMAP) --asc $(FPGA_BUILD)/$(PROJ).asc --json $(FPGA_BUILD)/$(PROJ).json 2> >(sed -e 's/^.* 0 errors$$//' -e '/^Info:/d' -e '/^[ ]*$$/d' 1>&2)
-# Convert to bitstream using IcePack
-$(FPGA_BUILD)/$(PROJ).bin : $(FPGA_BUILD)/$(PROJ).asc
-	icepack $(FPGA_BUILD)/$(PROJ).asc $(FPGA_BUILD)/$(PROJ).bin
-	
-# synthesize and flash the FPGA
-fpga: $(FPGA_BUILD)/$(PROJ).bin
-	iceprog -S $(FPGA_BUILD)/$(PROJ).bin
 
 
 ##############################################################################

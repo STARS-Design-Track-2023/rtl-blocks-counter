@@ -9,7 +9,7 @@
 
 `timescale 1ns/1ps
 
-module tb_counter ();
+module tb_counter_4 ();
 
     /////////////////////
     // Testbench Setup //
@@ -237,16 +237,6 @@ module tb_counter ();
         tb_at_max_4_exp = 1'b0;
         #(0.5); // small delay to check the values
         check_outputs_4(tb_count_4_exp, tb_at_max_4_exp);
-
-
-        ///////////////////////////////////////////////////////////////////////
-        // Add Test Cases for N = 8 Counter Below.                           //
-        // You first need to instantiate the wrapper counter with N = 8,     // 
-        // and define new signals for it in this testbench.                  //
-        ///////////////////////////////////////////////////////////////////////
-
-
-
  
         $finish;
     end
