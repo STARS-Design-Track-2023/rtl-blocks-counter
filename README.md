@@ -12,10 +12,18 @@ diagram, and wavedrom should be used to make a timing diagram. Only once
 a TA signs off on both of these diagrams may a student proceed to their 
 implementation.
 
-## Required Parameters
+## Source Files
+- shift_reg.sv : This is where the design code should be located.
+- tb_shift_reg.sv : This is the test bench used to test your design.
+
+## Specifications
+### Module Name 
+- shift_reg
+
+### Required Parameters
 - `N` | width of counter
 
-## Required Signals
+### Required Signals
 
 - `clk` | System Clock
 - `nrst` | Asyncronous active low reset to 0
